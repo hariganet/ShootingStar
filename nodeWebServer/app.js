@@ -40,10 +40,8 @@ server.listen(app.get('port'), function(){
 io.sockets.on('connection', function(socket){
   socket.on('message', function(data){
 
-    //stats.emit('stats', msg.toString());
-
-    client.send('/mouse/button', "up", data.x, data.y);
-    console.log(String(data.x) + ", " + String(data.y) + ' servered'); 
+    client.send('/mouse/position', data.ratioX, data.ratioY);
+    //console.log(String(data.x) + ", " + String(data.y) + ' servered'); 
   });
 });
 

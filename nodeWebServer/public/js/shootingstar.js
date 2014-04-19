@@ -4,6 +4,7 @@ var mouseX;
 var mouseY;
 var isBlush = false;
 var socket;
+var timer;
 
 window.onload = function(){
 
@@ -12,6 +13,8 @@ window.onload = function(){
   canvas = document.getElementById("canvas");
   expandCanvas();  
   ctx = canvas.getContext('2d');
+
+  timer = setInterval(draw, 20);
 
   document.addEventListener("mousemove", function(event){
     mouseX = event.pageX;
@@ -24,7 +27,10 @@ window.onload = function(){
       ctx.lineTo(mouseX, mouseY);
       ctx.stroke();
 
-      var position = { "x": mouseX, "y": mouseY };
+      var ratioX = mouseX / canvas.width;
+      var ratioY = mouseY / canvas.height;
+
+      var position = { "ratioX": ratioX, "ratioY": ratioY };
       socket.json.emit('message', position);
     }
     x = mouseX;
@@ -44,8 +50,14 @@ window.onload = function(){
     console.log('connected!');
   });
 
-
 };
+
+function draw(){
+  //キャンバスを初期化
+  ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+  ctx.rect(0, 0, canvas.width, canvas.height);
+  ctx.fill();
+}
 
 function expandCanvas(){
   canvas.width = window.innerWidth;
